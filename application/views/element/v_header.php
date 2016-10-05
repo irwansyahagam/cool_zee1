@@ -32,6 +32,8 @@
 
     </script>
 
+ 
+
 </head>
 
 <body>
@@ -48,6 +50,9 @@
                         </li>
                         <li class="<?php if(isset($active_penjualan)){echo $active_penjualan ;}?>">
                             <a href="<?php echo site_url('penjualan')?>"><i class="icon-barcode"></i> Penjualan</a>
+                        </li>
+                        <li class="<?php if(isset($active_pengeluaran)){echo $active_pengeluaran ;}?>">
+                            <a href="<?php echo site_url('pengeluaran')?>"><i class="icon-barcode"></i> Pengeluaran</a>
                         </li>
                         <li class="<?php if(isset($active_laporan)){echo $active_laporan ;}?>">
                             <a href="<?php echo site_url('laporan')?>"><i class="icon-file"></i> Laporan</a>

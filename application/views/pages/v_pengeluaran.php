@@ -8,98 +8,90 @@
 <script src="<?php echo base_url(); ?>lib/jquery-ui-1.10.0/development-bundle/ui/jquery.ui.autocomplete.js"></script>
 <script src="<?php echo base_url(); ?>lib/jquery-ui-1.10.0/development-bundle/ui/jquery.ui.datepicker.js"></script>
 
+<!--================ Content Wrapper===========================================-->
 <table class="table table-bordered table-striped">
     <thead>
     <tr>
         <th>No</th>
-        <th>Kode Barang</th>
-        <th>Nama Barang</th>
-        <th>Stok</th>
+        <th>Tanggal</th>
+        <th>Kode Pengeluaran</th>
+        <th>Nama Items/Barang</th>
+        <th>Jumlah</th>
         <th>Harga</th>
-        <th>Tgl Masuk</th>
-        <th class="span2">
-            <a href="#modalAddBarang" class="btn btn-mini btn-block btn-inverse" data-toggle="modal">
+        <th class="span3">
+            <a href="#modalAddpengbarang" class="btn btn-mini btn-block btn-inverse" data-toggle="modal">
                 <i class="icon-plus-sign icon-white"></i> Tambah Data
             </a>
         </th>
     </tr>
     </thead>
     <tbody>
-
     <?php
     $no=1;
-    if(isset($data_barang)){
-    foreach($data_barang as $row){
-    ?>
-    <tr>
-        <td><?php echo $no++; ?></td>
-        <td><?php echo $row->kd_barang; ?></td>
-        <td><?php echo $row->nm_barang; ?></td>
-        <td><?php echo $row->stok; ?></td>
-        <td><?php echo currency_format($row->harga);?></td>
-        <td><?php 
-        if(empty($row->tgl_masuk)){
-            echo ''; 
-        }else{
-        echo viewtglweb($row->tgl_masuk);
-        }
-        ?></td>
-        <td>
-            <a class="btn btn-mini" href="#modalEditBarang<?php echo $row->kd_barang?>" 
-            data-toggle="modal"><i class="icon-pencil"></i> Edit</a>
-            <a class="btn btn-mini" href="<?php echo site_url('master/hapus_barang/'.$row->kd_barang);?>"
-               onclick="return confirm('Anda yakin?')"> <i class="icon-remove"></i> Hapus</a>
-        </td>
-    </tr>
-
-    <?php }
+    if(isset($data_pengeluaran)){
+        foreach($data_pengeluaran as $row){
+            ?>
+            <tr class="gradeX">
+                <td><?php echo $no++; ?></td>
+                <td><?php echo date("d M Y",strtotime($row->tgl)); ?></td>
+                <td><?php echo $row->id; ?></td>
+                <td><?php echo $row->nama; ?></td>
+                <td><?php echo $row->jumlah; ?> Items</td>
+                <td><?php echo currency_format($row->harga); ?></td>
+                <td>
+                    <a class="btn btn-mini" href="#modaleditpenge<?php echo $row->id?>" 
+                    data-toggle="modal"><i class="icon-pencil"></i> Edit</a>
+                    <a class="btn btn-mini" href="<?php echo site_url('master/hpspengbrg/'.$row->id);?>"
+                    onclick="return confirm('Anda yakin?')"> <i class="icon-remove"></i> Hapus</a>
+                </td>
+            </tr>
+        <?php }
     }
     ?>
 
     </tbody>
 </table>
 
-
-<!-- ============ MODAL ADD BARANG =============== -->
-<div id="modalAddBarang" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!-- ============ MODAL ADD DATA PENGELUARAN =============== -->
+<div id="modalAddpengbarang" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel">Tambah Data Barang</h3>
+        <h3 id="myModalLabel">Tambah Data Barang Pengeluarang</h3>
     </div>
-    <form class="form-horizontal" method="post" action="<?php echo site_url('master/tambah_barang')?>">
+    <form class="form-horizontal" method="post" action="<?php echo site_url('master/tambahdtpenge')?>">
         <div class="modal-body">
             <div class="control-group">
                 <label class="control-label">Kode Barang</label>
                 <div class="controls">
-                    <input name="kd_barang" type="text" value="<?php echo $kd_barang; ?>" >
+                    <input name="idbarang" id="idbarang" type="text" value="" placeholder="Kode Barang">
                 </div>
             </div>
 
             <div class="control-group">
                 <label class="control-label" >Nama Barang</label>
                 <div class="controls">
-                    <input name="nm_barang" type="text" placeholder="Input Nama Barang...">
+                    <input name="nm_barang" id="nm_barang" type="text" placeholder="Input Nama Barang...">
                 </div>
             </div>
 
             <div class="control-group">
-                <label class="control-label" >Stok</label>
+                <label class="control-label" >Jumlah</label>
                 <div class="controls">
-                    <input name="stok" type="text" placeholder="Input Stok...">
+                    <input name="jlh" id="jlh" type="text" placeholder="Input Jumlah..." value="0">
                 </div>
             </div>
 
             <div class="control-group">
                 <label class="control-label">Harga</label>
                 <div class="controls">
-                    <input name="harga" type="text" placeholder="Input Harga...">
+                    <input name="harga" id="harga" type="text" placeholder="Input Harga..." value="0">
                 </div>
             </div>
 
             <div class="control-group">
-                <label class="control-label">Tgl Masuk</label>
+                <label class="control-label">Tgl Pengeluaran</label>
                 <div class="controls">
-                    <input name="tglbaru" id="tglbaru" type="text" placeholder="Input Harga..." value="<?php echo date('d-m-Y');?>">
+                    <input name="tglpeng" id="tglpeng" type="text"  value="<?php echo date('d-m-Y');?>">
                 </div>
             </div>
         </div>
@@ -110,52 +102,58 @@
     </form>
 </div>
 
-<!-- ============ MODAL EDIT BARANG =============== -->
+
+<!-- ============ MODAL EDIT BARANG PENGELUARAN =============== -->
 <?php
-if (isset($data_barang)){
-    foreach($data_barang as $row){
+if (isset($data_pengeluaran)){
+    foreach($data_pengeluaran as $row){
         ?>
-        <div id="modalEditBarang<?php echo $row->kd_barang?>" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div id="modaleditpenge<?php echo $row->id?>" class="modal hide fade" tabindex="-1" role="dialog" 
+        aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h3 id="myModalLabel">Edit Data Barang</h3>
+                <h3 id="myModalLabel">Edit Data Barang Pengeluaran</h3>
             </div>
-            <form class="form-horizontal" method="post" action="<?php echo site_url('master/edit_barang')?>">
+            <form class="form-horizontal" method="post" action="<?php echo site_url('pengeluaran/editbarangpeng')?>">
                 <div class="modal-body">
                     <div class="control-group">
-                        <label class="control-label">Kode Barang</label>
+                        <label class="control-label">Id Barang</label>
                         <div class="controls">
-                            <input name="kd_barang" type="text" value="<?php echo $row->kd_barang;?>" readonly>
+                            <input name="idbrgupd" id="idbrgupd" type="text" value="<?php echo $row->id;?>" readonly>
                         </div>
                     </div>
 
                     <div class="control-group">
                         <label class="control-label" >Nama Barang</label>
                         <div class="controls">
-                            <input name="nm_barang" type="text" value="<?php echo $row->nm_barang;?>" >
+                            <input name="nm_barangupd" id="nm_barangupd" type="text" value="<?php echo $row->nama;?>" >
                         </div>
                     </div>
 
                     <div class="control-group">
-                        <label class="control-label" >Stok</label>
+                        <label class="control-label" >Jumlah</label>
                         <div class="controls">
-                            <input name="stok" type="text" value="<?php echo $row->stok;?>">
+                            <input name="jlhedit" id="jlhedit" type="text" value="<?php echo $row->jumlah;?>">
                         </div>
                     </div>
 
                     <div class="control-group">
-                        <label class="control-label">Harga</label>
+                        <label class="control-label" >Harga</label>
                         <div class="controls">
-                            <input name="harga" type="text" value="<?php echo $row->harga;?>">
+                            <input name="hrgedit" id="hrgedit" type="text" value="<?php echo $row->harga;?>">
                         </div>
                     </div>
 
                     <div class="control-group">
-                        <label class="control-label">Tgl Masuk</label>
+                        <label class="control-label" >Tgl Pengeluaran</label>
                         <div class="controls">
-                            <input name="tglmasuk" id="tglmasuk" type="text" value="<?php echo $row->tgl_masuk;?>">
+                            <input name="tgledit" id="tgledit" type="text" value="<?php echo viewtglweb($row->tgl);?>">
                         </div>
                     </div>
+
+                    
+
+                    
                 </div>
                 <div class="modal-footer">
                     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
@@ -168,8 +166,16 @@ if (isset($data_barang)){
 ?>
 
 <script type="text/javascript">
-    $(function(){
-    $(document).on( 'click', "input#tglbaru",function(){
+        $(function(){
+            $('#btncetak').click(function(){
+                //$('.form-actions').html(''); 
+                var id=$(this).val(); 
+                var wind=window.open('penjualan/detail_penjualan1/'+id); 
+                wind.print(); 
+                wind.focus(); 
+            }); 
+
+                    $(document).on( 'click', "input#tgledit",function(){
         $(this).datepicker({
             dateFormat:"dd-mm-yy",
             showOn:'focus',
@@ -180,9 +186,10 @@ if (isset($data_barang)){
         }).focus();
         
     });
-    });
+        }); 
+
     $(function(){
-        $(document).on( 'click', "input#tglmasuk",function(){
+        $(document).on( 'click', "input#tglpeng",function(){
         $(this).datepicker({
             dateFormat:"dd-mm-yy",
             showOn:'focus',
@@ -195,4 +202,11 @@ if (isset($data_barang)){
     });
     }); 
 
+        $(function(){
+
+    }); 
 </script>
+
+
+
+

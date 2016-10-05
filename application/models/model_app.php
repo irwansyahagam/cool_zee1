@@ -142,6 +142,10 @@ class Model_app extends CI_Model{
 		")->result();
     }
 
+    function getalldatapengeluaran(){
+        return $this->db->get("tbl_pengeluaran")->result();
+    }
+
     function getDataPenjualan($id){
         return $this->db->query("SELECT * from tbl_penjualan_header a
                 left join tbl_pelanggan b on a.kd_pelanggan=b.kd_pelanggan

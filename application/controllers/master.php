@@ -36,10 +36,30 @@ class Master extends CI_Controller{
             'nm_barang'=>$this->input->post('nm_barang'),
             'stok'=>$this->input->post('stok'),
             'harga'=>$this->input->post('harga'),
+            'tgl_masuk'=>tglinsertdata($this->input->post('tglbaru'))
         );
         $this->model_app->insertData('tbl_barang',$data);
         redirect("master");
     }
+
+    function tambahdtpenge(){
+        $data=array(
+            'id'=>$this->input->post('idbarang'), 
+            'nama'=>$this->input->post('nm_barang'), 
+            'tgl'=>tglinsertdata($this->input->post('tglpeng')), 
+            'jumlah'=>$this->input->post('jlh'), 
+            'harga'=>$this->input->post('harga')
+            ); 
+        $this->db->insert('tbl_pengeluaran',$data); 
+        redirect('pengeluaran'); 
+    }
+    // hapus data pengeluaran barang 
+    function hpspengbrg(){
+        $data['id']=$this->uri->segment(3); 
+        $this->db->delete('tbl_pengeluaran',$data); 
+        redirect('pengeluaran'); 
+    }
+
     function tambah_pelanggan(){
         $data=array(
             'kd_pelanggan'=> $this->input->post('kd_pelanggan'),
@@ -70,6 +90,7 @@ class Master extends CI_Controller{
             'nm_barang'=>$this->input->post('nm_barang'),
             'stok'=>$this->input->post('stok'),
             'harga'=>$this->input->post('harga'),
+            'tgl_masuk'=>tglinsertdata($this->input->post('tglmasuk'))
         );
         $this->model_app->updateData('tbl_barang',$data,$id);
         redirect("master");
